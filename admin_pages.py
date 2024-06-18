@@ -11,7 +11,7 @@ def logout():
     st.session_state.user_role = ""
     st.session_state.user_id = ""
     st.session_state.page = "Login"
-    st.experimental_rerun()
+    st.rerun()
 
 def admin_page():
     st.markdown('<div class="centered"><h2>Admin Dashboard</h2></div>', unsafe_allow_html=True)
@@ -68,7 +68,7 @@ def assign_task_page():
                 else:
                     st.session_state['selected_task_id'] = task['id']
                     st.session_state['selected_task_title'] = task['title']
-                st.experimental_rerun()
+                st.rerun()
 
     with col2:
         st.write("### Users")
@@ -80,7 +80,7 @@ def assign_task_page():
                     del st.session_state['selected_user_id']
                 else:
                     st.session_state['selected_user_id'] = user['id']
-                st.experimental_rerun()
+                st.rerun()
 
     st.write("---")
 
@@ -103,7 +103,7 @@ def assign_task_page():
                     del st.session_state['selected_task_title']
                     del st.session_state['selected_user_id']
                     time.sleep(2)  # Așteaptă 2 secunde pentru a permite afișarea mesajului de succes
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error("Failed to assign task. Please try again.")
             except Exception as e:
@@ -124,12 +124,12 @@ def assign_task_page():
                 response = update_task_status(task['id'], "created")
                 if response:
                     st.success(f"Task {task['id']} unassigned")
-                    st.experimental_rerun()
+                    st.rerun()
             if col_delete.button("Delete", key=f"delete_{task['id']}", use_container_width=True):
                 response = delete_task(task['id'])
                 if response:
                     st.success(f"Task {task['id']} deleted")
-                    st.experimental_rerun()
+                    st.rerun()
 
 def login_page():
     st.markdown('<div class="centered"><h2>Login</h2></div>', unsafe_allow_html=True)
@@ -144,7 +144,7 @@ def login_page():
             st.session_state.user_id = user["id"]
             st.success("Logged in successfully")
             st.session_state.page = "Admin Dashboard" if user["role"] == "admin" else "User Dashboard"
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error(user["message"])
 
@@ -163,7 +163,7 @@ def create_task_page():
             response = create_task(task)
             st.text_area
         st.write(response)
-        
+
 
 def is_valid_email(email):
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
@@ -209,7 +209,7 @@ def create_user_page():
                 response = delete_user(user['id'])
                 if response:
                     st.success(f"User {user['email']} deleted")
-                    st.experimental_rerun()
+                    st.rerun()
 
 
 def manage_tasks_page():
@@ -287,7 +287,7 @@ def manage_tasks_page():
             response = delete_task(task['id'])
             if response:
                 st.success(f"Task {task['id']} deleted")
-                st.experimental_rerun()
+                st.rerun()
 
         if st.session_state.get(f"edit_mode_{task['id']}", False):
             task_details = get_task_by_id(task['id'])
@@ -315,17 +315,17 @@ def manage_tasks_page():
                     elif isinstance(response, dict) and response.get("statusCode", 200) == 200:
                         st.success(f"Task {task['id']} updated successfully.")
                         st.session_state[f"edit_mode_{task['id']}"] = False
-                        st.experimental_rerun()
+                        st.rerun()
                     else:
                         st.success(response)  # If the response is a string, consider the update successful
                         st.session_state[f"edit_mode_{task['id']}"] = False
-                        st.experimental_rerun()
+                        st.rerun()
                 except Exception as e:
                     st.error(f"An error occurred: {str(e)}")
 
             if col4.button("Cancel", key=f"cancel_{task['id']}", help="Cancel Update", use_container_width=True):
                 st.session_state[f"edit_mode_{task['id']}"] = False
-                st.experimental_rerun()
+                st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("</div>", unsafe_allow_html=True)

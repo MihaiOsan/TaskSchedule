@@ -14,6 +14,6 @@ def login_page():
             st.session_state.user_id = user["id"]
             st.success("Logged in successfully")
             st.session_state.page = "Manage Tasks" if user["role"] == "admin" else "User Dashboard"
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error(user["message"])

@@ -6,14 +6,14 @@ def logout():
     st.session_state.user_role = ""
     st.session_state.user_id = ""
     st.session_state.page = "Login"
-    st.experimental_rerun()
+    st.rerun()
 
 def logout():
     st.session_state.logged_in = False
     st.session_state.user_role = ""
     st.session_state.user_id = ""
     st.session_state.page = "Login"
-    st.experimental_rerun()
+    st.rerun()
 
 def user_page():
     st.title("User Dashboard")
@@ -34,7 +34,7 @@ def user_page():
                 if col1.button("Complete", key=f"complete_{task['id']}"):
                     with st.spinner('Completing task...'):
                         update_task_status(task['id'], "completed")
-                    st.experimental_rerun()
+                    st.rerun()
 
     st.subheader("Completed Tasks")
     for task in tasks:
@@ -47,5 +47,5 @@ def user_page():
                 if col1[0].button("Reopen", key=f"reopen_{task['id']}"):
                     with st.spinner('Reopening task...'):
                         update_task_status(task['id'], "assigned")
-                    st.experimental_rerun()
+                    st.rerun()
 
